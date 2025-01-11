@@ -14,7 +14,7 @@ userRouter.get("/:user_id/likes", userController.getLikesByUserId)
 userRouter.get("/:user_id/rates", userController.getRatesByUserId)
 
 //Post new order
-// userRouter.post("/order", userController.addOrder)
+userRouter.post("/order", userController.addOrder)
 
 //Post like new restaurant
 userRouter.post("/likeRestaurant", userController.likeRestaurant)

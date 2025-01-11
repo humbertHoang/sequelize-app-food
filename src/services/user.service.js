@@ -192,6 +192,52 @@ const userService = {
       message: "Successfully rate restaurant",
     }
   },
-  // addOrder: async (req) => {},
+  addOrder: async (req) => {
+    const { user_id, food_id, amount, code, arr_sub_id = null } = req.body
+    if (!user_id || !food_id) {
+      throw new BadRequestException("Missing required fields", 400)
+    }
+
+    const user = await models.user.findOne({
+      where: { user_id },
+      raw: true,
+    })
+    if (!user) {
+      throw new BadRequestException("User not found", 404)
+    }
+
+    const food = await models.food.findOne({
+      where: { food_id },
+      raw: true,
+    })
+    if (!food) {
+      throw new BadRequestException("Food not found", 404)
+    }
+
+    const order = await models.order.findOne({
+      where: { user_id, food_id },
+      raw: true,
+    })
+    if (order) {
+      throw new BadRequestException("Order already exists", 400)
+    }
+
+    await models.order.create({
+      user_id: +user_id,
+      food_id: +food_id,
+      amount,
+      code,
+      arr_sub_id,
+    })
+
+    return {
+      user_id: +user_id,
+      food_id: +food_id,
+      amount,
+      code,
+      arr_sub_id,
+      message: "Successfully add order",
+    }
+  },
 }
 export default userService

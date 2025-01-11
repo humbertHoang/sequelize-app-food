@@ -86,5 +86,19 @@ const userController = {
       next(error)
     }
   },
+  addOrder: async (req, res, next) => {
+    try {
+      const order = await userService.addOrder(req)
+      const resData = new ResponseHelper().sendSuccess(
+        res,
+        order,
+        order.message,
+        200
+      )
+      return resData
+    } catch (error) {
+      next(error)
+    }
+  },
 }
 export default userController
