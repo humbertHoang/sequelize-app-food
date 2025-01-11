@@ -1,6 +1,16 @@
 import express from "express"
+import { handleError } from "./common/helpers/error.helper.js"
+import rootRouter from "./routers/root.router.js"
+
 const app = express()
+const port = 3069
+
 app.use(express.json())
-app.listen(3069, () => {
-  console.log(`Server Online At Port 3069`)
+app.use("/", rootRouter)
+app.use((err, req, res, next) => {
+  handleError(err, res)
+})
+
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`)
 })
